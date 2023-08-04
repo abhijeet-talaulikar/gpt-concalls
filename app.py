@@ -1,3 +1,7 @@
+import('pysqlite3')
+import sys
+sys.modules['sqlite3'] = sys.modules.pop('pysqlite3')
+
 #region Imports
 import streamlit as st
 import pickle
@@ -106,9 +110,9 @@ def disable():
   st.session_state.disabled = True
 
 with st.form('frm_file'):
-  uploaded_file = st.file_uploader("Choose a PDF file")
+  uploaded_file = st.file_uploader("Choose a file")
   st.markdown('or')
-  url_file = st.text_input('URL to PDF file', '')
+  url_file = st.text_input('URL to file', '')
   frm_file_submitted = st.form_submit_button('Search', on_click=disable, disabled=st.session_state.disabled)
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
