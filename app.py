@@ -32,21 +32,9 @@ def read_pdf(file, on_disk=True):
 #region Prompts
 prompt_default = '''
 This document is the transcript of an earnings conference call of a company. Assume you are an analyst who 
-attended this call. Identify which company this document is talking about. Create a report that answers each of the following 10 questions. 
-
-What are some of the current and looming threats to the business? 
-What is the debt level or debt ratio of the company right now? 
-How do you feel about the upcoming product launches or new products? 
-How are you managing or investing in your human capital? 
-How do you track the trends in your industry? 
-Are there major slowdowns in the production of goods? 
-How will you maintain or surpass this performance in the next few quarters? 
-What will your market look like in five years as a result of using your product or service? 
-How are you going to address the risks that will affect the long-term growth of the company? 
-How is the performance this quarter going to affect the long-term goals of the company? 
-
-
-I want the output in markdown format. Here is an example of the format.
+attended this call. Identify which company this document is talking about. Identify 10 best questions and their 
+answers that would help summarize the company's performance. 
+Create a report in a markdown format that answers each of those 10 questions. Here is an example of the format.
 
 Example
 
