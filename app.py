@@ -15,8 +15,8 @@ from langchain.chains import RetrievalQA
 #endregion
 
 #region Config
-st.set_page_config(layout="wide")
-st.title('Navigate Company Concall Transcripts')
+st.set_page_config(layout="wide", page_title="Concall Transcripts with GPT")
+st.title('Concall Transcripts with GPT')
 openai_api_key = st.sidebar.text_input('OpenAI API Key', value='')
 if "response_default" not in st.session_state:
   st.session_state['response_default'] = None
@@ -24,10 +24,7 @@ if "response_default" not in st.session_state:
 
 #region Load PDF Function
 def read_pdf(file, on_disk=True):
-  if on_disk:
-    loader = PyPDFLoader(file)
-  else:
-    loader = OnlinePDFLoader(file)
+  loader = OnlinePDFLoader(file)
   documents = loader.load()
   return documents
 #endregion
@@ -110,9 +107,7 @@ def disable():
   st.session_state.disabled = True
 
 with st.form('frm_file'):
-  uploaded_file = st.file_uploader("Choose a file")
-  st.markdown('or')
-  url_file = st.text_input('URL to file', '')
+  url_file = st.text_input('URL to PDF file', '')
   frm_file_submitted = st.form_submit_button('Search', on_click=disable, disabled=st.session_state.disabled)
   if not openai_api_key.startswith('sk-'):
     st.warning('Please enter your OpenAI API key!', icon='⚠')
@@ -145,15 +140,11 @@ if st.session_state['response_default']:
 #endregion
 
 #region Callback
-if frm_file_submitted and (uploaded_file is not None or url_file!=""):
+if frm_file_submitted and url_file!="":
   if not openai_api_key.startswith('sk-'):
       st.warning('Please enter your OpenAI API key!', icon='⚠')
   else:
-    if uploaded_file is not None:
-      documents = read_pdf(uploaded_file, True)
-    elif url_file!="":
-      documents = read_pdf(url_file, False)
-
+    documents = read_pdf(url_file, False)
     response_default = generate_default_response(documents)
     st.session_state['documents'] = pickle.dumps(documents)
     st.session_state['response_default'] = response_default
